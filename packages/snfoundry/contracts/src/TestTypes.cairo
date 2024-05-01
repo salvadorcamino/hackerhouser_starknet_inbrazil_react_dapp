@@ -35,9 +35,15 @@ pub trait ITestTypes<TContractState> {
     // Method for a void type action
     fn void(ref self: TContractState);
 
-    // Methods for boolean values
+    // Methods for byteArray values
     fn set_byte_array(ref self: TContractState, value: ByteArray);
     fn get_byte_array(self: @TContractState) -> ByteArray;
+
+    // Methods for bytes31 values
+    fn set_bytes31(ref self: TContractState, value: bytes31);
+    fn get_byte31(self: @TContractState) -> bytes31;
+
+
 }
 
 #[starknet::contract]
@@ -53,6 +59,7 @@ mod TestTypes {
         //  balance7: u512,
         bool_value: bool,
         byte_array: ByteArray,
+        bytes31: bytes31,
     }
 
     #[abi(embed_v0)]
@@ -158,6 +165,14 @@ mod TestTypes {
 
         fn get_byte_array(self: @ContractState) -> ByteArray {
             self.byte_array.read()
+        }
+
+        fn set_bytes31(ref self: ContractState, value: bytes31 ) {
+            self.bytes31.write(value);
+        }
+
+        fn get_byte31(self: @ContractState) -> bytes31 {
+            self.bytes31.read()
         }
     }
 }
