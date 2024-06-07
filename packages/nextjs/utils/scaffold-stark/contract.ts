@@ -137,7 +137,7 @@ export type AbiFunction = {
   state_mutability: AbiStateMutability;
 };
 
-export const contracts = contractsData as GenericContractsDeclaration | null;
+export const contracts = contractsData as GenericContractsDeclaration;
 
 export type UseScaffoldWriteConfig<
   TContractName extends ContractName,
@@ -160,29 +160,12 @@ export type UseScaffoldWriteConfig<
   > &
     UseScaffoldArgsParam<TContractName, TFunctionName>
 >;
-
 type InferContractAbi<TContract> = TContract extends { abi: infer TAbi }
   ? TAbi
   : never;
 
 export type ContractAbi<TContractName extends ContractName = ContractName> =
   InferContractAbi<Contract<TContractName>>;
-
-export type FunctionNamesWithInputs<TContractName extends ContractName> =
-  Exclude<
-    Extract<
-      Extract<
-        ContractAbi<TContractName>[number],
-        { type: "interface" }
-      >["items"][number],
-      {
-        type: "function";
-      }
-    >,
-    {
-      inputs: readonly [];
-    }
-  >["name"];
 
 type OptionalTupple<T> = T extends readonly [infer H, ...infer R]
   ? readonly [H | undefined, ...OptionalTupple<R>]
@@ -205,39 +188,24 @@ export type ExtractAbiFunctionNamesScaffold<
 > = ExtractAbiFunctionsScaffold<TAbi, TAbiStateMutability>["name"];
 
 // helper function will only take from interfaces : //TODO: see if we can make it more generic
-// helper function will only take from interfaces : //TODO: see if we can make it more generic
 export type ExtractAbiFunctionsScaffold<
   TAbi extends Abi,
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
-> = Extract<
-  ExtractAbiInterfaces<TAbi>["items"][number],
-  | {
-      state_mutability: TAbiStateMutability;
-    }
+> =
+  | Extract<
+      ExtractAbiInterfaces<TAbi>["items"][number],
+      {
+        type: "function";
+        state_mutability: TAbiStateMutability;
+      }
+    >
   | Extract<
       TAbi[number],
       {
         type: "function";
+        state_mutability: TAbiStateMutability;
       }
-    >
->;
-
-// helper function will only take from interfaces : //TODO: see if we can make it more generic
-export type ExtractAbiFunctionNamesWithInputsScaffold<
-  TAbi extends Abi,
-  TAbiStateMutibility extends AbiStateMutability = AbiStateMutability,
-> = Exclude<
-  Extract<
-    ExtractAbiInterfaces<TAbi>["items"][number],
-    {
-      type: "function";
-      state_mutability: TAbiStateMutibility;
-    }
-  >,
-  {
-    inputs: readonly [];
-  }
->["name"];
+    >;
 
 export type ExtractAbiFunctionScaffold<
   TAbi extends Abi,
@@ -246,6 +214,35 @@ export type ExtractAbiFunctionScaffold<
   ExtractAbiFunctionsScaffold<TAbi>,
   {
     name: TFunctionName;
+  }
+>;
+
+// helper function will only take from interfaces : //TODO: see if we can make it more generic
+export type ExtractAbiFunctionNamesWithInputsScaffold<
+  TAbi extends Abi,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+> = ExtractAbiFunctionsWithInputsScaffold<TAbi, TAbiStateMutability>["name"];
+
+export type ExtractAbiFunctionsWithInputsScaffold<
+  TAbi extends Abi,
+  TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
+> = Exclude<
+  | Extract<
+      ExtractAbiInterfaces<TAbi>["items"][number],
+      {
+        type: "function";
+        state_mutability: TAbiStateMutability;
+      }
+    >
+  | Extract<
+      TAbi[number],
+      {
+        type: "function";
+        state_mutability: TAbiStateMutability;
+      }
+    >,
+  {
+    inputs: readonly [];
   }
 >;
 
