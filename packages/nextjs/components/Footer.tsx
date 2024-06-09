@@ -65,12 +65,12 @@ export const Footer = () => {
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
               <a
-                href="https://github.com/Quantum3-Labs/scaffold-stark-2"
+                href="#"
                 target="_blank"
                 rel="noreferrer"
                 className="link"
               >
-                Fork me
+                dAppp
               </a>
             </div>
             <span>·</span>
@@ -80,33 +80,32 @@ export const Footer = () => {
               </p>
               <a
                 className="flex justify-center items-center gap-1"
-                href="https://quantum3labs.com/"
+                href="#"
                 target="_blank"
                 rel="noreferrer"
               >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">Q3 Labs</span>
+                <span className="link">Sal</span>
               </a>
               <p className="m-0 text-center">at</p>
               <a
                 className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
+                href="#"
                 target="_blank"
                 rel="noreferrer"
               >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
+               
+                <span className="link">HH</span>
               </a>
             </div>
             <span>·</span>
             <div className="text-center">
               <a
-                href="https://t.me/+wO3PtlRAreo4MDI9"
-                target="_blank"
+                href="#"
+                target=""
                 rel="noreferrer"
                 className="link"
               >
-                Support
+                Starknet
               </a>
             </div>
           </div>
